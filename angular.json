@@ -2,5 +2,169 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
-  "projects": {}
+  "projects": {
+    "ngx-named-routes": {
+      "root": "projects/ngx-named-routes",
+      "sourceRoot": "projects/ngx-named-routes/src",
+      "projectType": "library",
+      "prefix": "nr",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-named-routes/tsconfig.lib.json",
+            "project": "projects/ngx-named-routes/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-named-routes/src/test.ts",
+            "tsConfig": "projects/ngx-named-routes/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-named-routes/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-named-routes/tsconfig.lib.json",
+              "projects/ngx-named-routes/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "named-routes-test-app": {
+      "root": "projects/named-routes-test-app/",
+      "sourceRoot": "projects/named-routes-test-app/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/named-routes-test-app",
+            "index": "projects/named-routes-test-app/src/index.html",
+            "main": "projects/named-routes-test-app/src/main.ts",
+            "polyfills": "projects/named-routes-test-app/src/polyfills.ts",
+            "tsConfig": "projects/named-routes-test-app/tsconfig.app.json",
+            "assets": [
+              "projects/named-routes-test-app/src/favicon.ico",
+              "projects/named-routes-test-app/src/assets"
+            ],
+            "styles": [
+              "projects/named-routes-test-app/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/named-routes-test-app/src/environments/environment.ts",
+                  "with": "projects/named-routes-test-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "named-routes-test-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "named-routes-test-app:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "named-routes-test-app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/named-routes-test-app/src/test.ts",
+            "polyfills": "projects/named-routes-test-app/src/polyfills.ts",
+            "tsConfig": "projects/named-routes-test-app/tsconfig.spec.json",
+            "karmaConfig": "projects/named-routes-test-app/karma.conf.js",
+            "styles": [
+              "projects/named-routes-test-app/src/styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "projects/named-routes-test-app/src/favicon.ico",
+              "projects/named-routes-test-app/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/named-routes-test-app/tsconfig.app.json",
+              "projects/named-routes-test-app/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "named-routes-test-app-e2e": {
+      "root": "projects/named-routes-test-app-e2e/",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/named-routes-test-app-e2e/protractor.conf.js",
+            "devServerTarget": "named-routes-test-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "named-routes-test-app:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "projects/named-routes-test-app-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "ngx-named-routes"
 }

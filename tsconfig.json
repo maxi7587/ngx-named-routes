@@ -17,6 +17,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ngx-named-routes": [
+        "dist/ngx-named-routes"
+      ],
+      "ngx-named-routes/*": [
+        "dist/ngx-named-routes/*"
+      ]
+    }
   }
 }
