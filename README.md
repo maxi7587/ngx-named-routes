@@ -1,27 +1,142 @@
 # NgxNamedRoutes
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.4.
+Easily add named routes to your Angular 7 projects.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- Use named routes with angular router
+- Supports lazy loaded routes
 
-## Code scaffolding
+## Project requirements
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+**IMPORTANT:** To use this library in projects with lazy loaded modules, you must enable `PreloadAllModules` preloading strategy the app router.
 
-## Build
+```
+import { RouterModule, PreloadAllModules } from '@angular/router';
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+...
 
-## Running unit tests
+@NgModule({
+    imports: [
+        RouterModule.forRoot(app_routes, {
+            preloadingStrategy: PreloadAllModules
+        })
+    ],
+    exports: [RouterModule]
+})
+export class AppRoutingModule {}
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Quick start
 
-## Running end-to-end tests
+### 1 - Install NgxNamedRoutes
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Using **npm**:
 
-## Further help
+`npm install --save ngx-named-routes`
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Using **yarn**:
+
+`yarn add ngx-named-routes`
+
+### 2 - Import NgxNamedRoutesService in your app module
+
+```
+import { NgxNamedRoutesService } from 'ngx-named-routes';
+
+import: [
+    ...
+    NgxNamedRoutesService,
+    ...
+]
+```
+
+### 3 - Load named routes in your AppModule class constructor
+
+Remember to do it after RouterConfigLoadEnd router event:
+
+```
+import { RouterConfigLoadEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
+
+...
+
+export class AppModule {
+    public constructor(
+        private router: Router,
+        private ngxNamedRoutesService: NgxNamedRoutesService,
+    ) {
+        router.events.pipe(filter(event => event instanceof RouteConfigLoadEnd)).subscribe(event => {
+            ngxNamedRoutesService.loadRoutes();
+        });
+    }
+}
+```
+
+### 4 - Add names to your routes
+
+You can add the route name directly in the routes array inside the routing module. Notice that you'll need to change the routes array type:
+
+
+```
+export const app_routes: Array<INamedRoute> = [
+    {
+        path: 'lazy',
+        name: 'lazy',
+        loadChildren: './lazy/lazy.module#LazyModule'
+    },
+    {
+        path: 'login',
+        name: 'login',
+        children: [
+            {
+                path: 'reset_password',
+                name: 'login.reset_password',
+                loadChildren: './lazy/lazy.module#LazyModule'
+            }
+        ]
+    },
+    {
+        path: '**',
+        redirectTo: 'lazy'
+    }
+];
+
+@NgModule({
+    imports: [
+        RouterModule.forRoot(app_routes, {
+            preloadingStrategy: PreloadAllModules
+        })
+    ],
+    exports: [RouterModule]
+})
+export class AppRoutingModule {}
+```
+
+**NOTE:** You don't need to add a name to all the routes defined in your router, just the ones you want to call by their name.
+
+### 5 - You are ready to start calling your routes by their name
+
+To call a route by its name, just import NgxNamedRoutesService in the component you are working on and call `getRoute` method:
+
+```
+import { Router } from '@angular/router';
+import { NgxNamedRoutesService } from 'ngx-named-routes';
+
+...
+
+export class SomeComponent {
+    public constructor(
+        private router: Router,
+        private ngxNamedRoutesService: NgxNamedRoutesService
+    ) {}
+
+    public goToTestView() {
+        this.router.navigate([this.ngxNamedRoutesService.getRoute('lazy.test')]);
+    }
+}
+```
+
+Thats all, you can get any of your named routes using this method, **no matter if it's in an aeger or lazy loaded module**.
+
+Hope you enjoy it! Issues and PRs are welcome!!!
