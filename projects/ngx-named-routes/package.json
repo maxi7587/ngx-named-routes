@@ -1,6 +1,25 @@
 {
   "name": "ngx-named-routes",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "Add named routes to your angular 7 projects",
+  "author": "Maximiliano Cruz",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maxi7587/ngx-named-routes.git"
+  },
+  "bugs": "https://github.com/maxi7587/ngx-named-routes/issues",
+  "homepage": "https://github.com/maxi7587/ngx-named-routes",
+  "keywords": [
+    "angular",
+    "javascript",
+    "typescript",
+    "router",
+    "named-routes",
+    "named",
+    "routes",
+    "service"
+  ],
+  "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^7.1.0",
     "@angular/core": "^7.1.0"
