@@ -39,15 +39,13 @@ export class NgxNamedRoutesService {
             return value;
         }));
         for (let route of routes) {
-            if (route.name && !this.__named_routes[route.name]) {
-                let backslash_required: string;
-                if (child_route && child_route.parent_path !== '') {
-                    backslash_required = child_route.parent_path[0] === '/' ? '' : '/';
-                    route.path = backslash_required + child_route.parent_path + '/' + route.path;
-                } else {
-                    backslash_required = route.path[0] === '/' ? '' : '/';
-                    route.path = backslash_required + route.path;
-                }
+            let backslash_required: string;
+            if (child_route && ['', '/'].indexOf(child_route.parent_path) === -1) {
+                backslash_required = child_route.parent_path[0] === '/' ? '' : '/';
+                route.path = backslash_required + child_route.parent_path + (route.path !== '' ? '/' + route.path : '');
+            } else {
+                backslash_required = route.path[0] === '/' && route.path !== '' ? '' : '/';
+                route.path = backslash_required + route.path;
             }
             if (route.name && !this.__named_routes[route.name]) {
                 this.__named_routes[route.name] = { ...route };
