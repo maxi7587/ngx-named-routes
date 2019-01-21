@@ -84,9 +84,9 @@ export class NgxNamedRoutesService {
         if (!param_values || param_values === {}) {
             return raw_route;
         }
-        let route = '';
+        let route = raw_route;
         for (let param_key in param_values) {
-            route = raw_route.replace(':' + param_key, param_values[param_key]);
+            route = route.replace(':' + param_key, param_values[param_key]);
         }
 
         return route;
