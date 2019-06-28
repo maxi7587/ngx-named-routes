@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, Route } from '@angular/router';
+import { cloneDeep } from 'lodash';
 
 export interface IChildRoute {
     routes: Array<{[key: string]: any}>;
@@ -18,26 +19,16 @@ export interface INamedRoute extends Route {
 })
 export class NgxNamedRoutesService {
 
+    public counter = 0;
+
     private __named_routes: {[key: string]: any} = {};
 
     public constructor(private __router: Router) {}
 
     public loadRoutes(child_route?: IChildRoute): {[key: string]: any} {
+        this.counter ++;
         let routes = [];
-        routes = child_route ? child_route.routes : JSON.parse(JSON.stringify(this.__router.config, (key, value) => {
-            if (typeof value === 'object' && value !== null) {
-                if (routes.indexOf(value) !== -1) {
-                    try {
-                        return JSON.parse(JSON.stringify(value));
-                    } catch (error) {
-                        return;
-                    }
-                }
-                routes.push(value);
-            }
-
-            return value;
-        }));
+        routes = child_route ? child_route.routes : cloneDeep(this.__router.config);
         for (let route of routes) {
             let backslash_required: string;
             if (child_route && ['', '/'].indexOf(child_route.parent_path) === -1) {
