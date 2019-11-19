@@ -59,6 +59,9 @@ export class NgxNamedRoutesService {
         let route: string;
         if (!this.__named_routes[name]) {
             this.loadRoutes();
+            if (!this.__named_routes[name]) {
+                throw new Error(`La ruta ${name} no existe o el módulo que la define aún no ha sido cargado.`);
+            }
 
             raw_route = this.__named_routes[name].path;
             if (raw_route) {
