@@ -79,7 +79,7 @@ export class NgxNamedRoutesService {
         return this.__named_routes;
     }
 
-    public getNamedRoute(): INamedRoute {
+    public getNamedRoute(name: string): INamedRoute {
         if (Object.keys(this.__named_routes).length === 0) {
             this.loadRoutes();
         }
