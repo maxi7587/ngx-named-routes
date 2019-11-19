@@ -71,6 +71,14 @@ export class NgxNamedRoutesService {
         }
     }
 
+    public getNamedRoutes(): {[key: string]: any} {
+        if (Object.keys(this.__named_routes).length === 0) {
+            this.loadRoutes();
+        }
+
+        return this.__named_routes;
+    }
+
     private fillRouteParams(raw_route, param_values?): string {
         if (!param_values || param_values === {}) {
             return raw_route;
