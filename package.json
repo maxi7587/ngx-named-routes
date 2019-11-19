@@ -1,6 +1,6 @@
 {
   "name": "ngx-named-routes",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "Add named routes to your angular 7 projects",
   "author": "Maximiliano Cruz",
   "repository": {
