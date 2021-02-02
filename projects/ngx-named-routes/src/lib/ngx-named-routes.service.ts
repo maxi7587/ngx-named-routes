@@ -53,10 +53,8 @@ export class NgxNamedRoutesService {
     }
 
     public getRoute(name: string, param_values?: {[key: string]: string | number}): string {
-        // TODO: si no existe el nombre, llamar nuevamente a loadRoutes, porque el módulo puede haber sido cargado perezosamente
-        // need preloading strategy PreloadAllModules
+        // note: need preloading strategy "PreloadAllModules" in project config
         let raw_route: string;
-        let route: string;
         if (!this.__named_routes[name]) {
             this.loadRoutes();
 
